@@ -1,10 +1,21 @@
-let count = 999;
+let displayElement = document.getElementById("display_element");
 
-let counterElement = document.getElementById("display_counter");
+const lastSeen = getCookie('lastSeen');
 
-counterElement.innerText = count;
+if (lastSeen === 'never') {
+    displayElement.innerText = "Witaj pierwszy raz na stronie!!";
+} else {
+    displayElement.innerText = "Witaj! Ostatni raz odwiedziłeś nas " + parseInt(lastSeen)/1000 + " sekund temu!";
+}
 
-function buttonClicked() {
-    count = count + 1;
-    counterElement.innerText = count;
+
+function getCookie(name) {
+    const cookies = document.cookie.split(';');
+
+    for (const pair of cookies) {
+        const [cookieName, cookieValue] = pair.split('=');
+        if (cookieName.trim() === name) {
+            return cookieValue;
+        }
+    }
 }
