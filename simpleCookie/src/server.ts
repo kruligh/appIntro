@@ -3,6 +3,7 @@ import {Express, NextFunction, Request, Response} from "express";
 import * as bodyParser from "body-parser";
 import * as cookieParser from "cookie-parser";
 import * as serveStatic from 'serve-static';
+import {randomBytes} from "crypto";
 
 const PORT = 3000;
 const STATIC_DIR = `./public`;
@@ -31,6 +32,23 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 app.use(serveStatic(STATIC_DIR, {'index': ['index.html']}));
+
+const router = express.Router();
+
+router.post('/login', function (req, res) {
+    res.cookie('session', new Buffer(randomBytes(40)).toString('hex'));
+    res.json({message: 'hooray! welcome to our api!'});
+});
+
+router.get('/tajnastrona', function (req, res) {
+    if(req.cookies.session) {
+        res.json({message: 'cześć, id twojej sesji to ' + req.cookies.session});
+    } else {
+        res.json({message: 'cześć, aby zobaczyć tą stroną, zaloguj się'});
+    }
+});
+
+app.use('/api', router);
 
 app.listen(PORT, () => {
     console.log("Server started on port " + PORT + " server static from " + STATIC_DIR);
