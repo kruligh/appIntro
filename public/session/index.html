@@ -8,7 +8,7 @@
     <!--Style-->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
     <link rel="stylesheet" href="../w3.css">
-    <link rel="stylesheet" href="../index.css">
+    <link rel="stylesheet" href="../cookie/index.css">
 
 </head>
 
@@ -18,7 +18,7 @@
     <div class="w3-bar w3-black w3-card">
         <a href="../index.html" class="w3-bar-item w3-button w3-padding-large">HOME</a>
         <a href="./index.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">LOGOWANIE</a>
-        <a href="./tajnastrona.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">TAJNA STRONA</a>
+        <a href="tajnastrona.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small">TAJNA STRONA</a>
 
     </div>
 </div>
@@ -45,6 +45,11 @@
         <br>
         <div class="w3-center">
             <div class="container" id="content">
+                <input type="text" placeholder="Enter Username" id="uname" required>
+
+                <input type="password" placeholder="Enter Password" id="psw" required>
+
+                <button id="submitButton" type="submit">Login</button>
             </div>
         </div>
     </div>
@@ -58,14 +63,18 @@
 
 
 <script>
-    (async function () {
-        const res = await fetch('/api/tajnastrona', {
-            method: 'GET',
+    document.getElementById('submitButton').addEventListener('click', async () => {
+        const uname = document.getElementById('uname').value;
+        const psw = document.getElementById('psw').value;
+
+        await fetch('/api/login', {
+            method: 'POST',
             headers: {
                 "Content-Type": "application/json; charset=utf-8",
             },
+            body: JSON.stringify({uname, psw}),
         });
 
-        document.getElementById('content').innerText = (await res.json()).message;
-    })();
+        document.getElementById('content').innerHTML = 'witaj';
+    });
 </script>

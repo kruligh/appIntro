@@ -13,11 +13,11 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use((req: Request, res: Response, next: NextFunction) => {
-    console.log(req.url);
+    console.log(req.url, req.url.startsWith('/cookie/index.html'));
     if (req.url === '/') {
         res.redirect('/index.html');
         return;
-    } else if (req.url === '/index.html') {
+    } else if (req.url.startsWith('/cookie/index.html')) {
 
         if (!req.cookies.lastVisit) {
             res.cookie('lastSeen', 'never');
